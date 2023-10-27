@@ -1,4 +1,3 @@
-
 local DataStoreService = game:GetService("DataStoreService")
 local PlayerDataStore = DataStoreService:GetDataStore("Datastore_000A")
 
@@ -63,9 +62,9 @@ local function Create_Folders_In_Player(plrinst)
 	local MetaData = Instance.new("Folder")
 	MetaData.Name = "MetaData"
 	MetaData.Parent = plrinst
-	
+
 	local values = {"teamValue", "raceValue", "genderValue", "displayNameValue"}
-	
+
 	for _, name in ipairs(values) do
 		local value = Instance.new("StringValue")
 		value.Name = name
@@ -76,7 +75,7 @@ local function Create_Folders_In_Player(plrinst)
 end
 
 local function Assign_role(metaData)
-	
+
 	local teamValue = metaData:FindFirstChild("teamValue")
 	local raceValue = metaData:FindFirstChild("raceValue")
 
@@ -85,7 +84,7 @@ local function Assign_role(metaData)
 	end
 
 	local teams = {"Human", "Monster"}
-	
+
 	local races = {
 		{"Human", "halfHuman", "DivineHuman"},
 		{"Orc", "Goblin", "Slime", "Demon"}
@@ -102,48 +101,48 @@ end
 
 
 game.Players.PlayerAdded:Connect(function(plrinst)
-	
+
 	local UserId = plrinst.UserId
-	local creation_frame = plrinst.PlayerGui.creationGui.Frame
-	
-	if not Has_player_joined(plrinst,UserId,PlayerDataStore) then
-		
+
+	print(Has_player_joined(plrinst,UserId,PlayerDataStore))
+	if not Has_player_joined(plrinst,UserId,PlayerDataStore) then -- if player dont have data
+
 		local metaData = Create_Folders_In_Player(plrinst)
 
-		creation_frame.Visible = true
-		
+
 		Assign_role(metaData)
-		
+
 		local teamValue = metaData:FindFirstChild("teamValue")
 		local raceValue = metaData:FindFirstChild("raceValue")
 		local genderValue = metaData:FindFirstChild("genderValue")
 		local displayNameValue = metaData:FindFirstChild("displayNameValue")
 
 		local data = {
+			["Has_Joined_BF"] = true,
 			["teamValue"] = teamValue.Value,
 			["raceValue"] = raceValue.Value,
 			["genderValue"] = genderValue.Value,
 			["displayNameValue"] = displayNameValue.Value
 		}
-		
+
 		Write_Data(plrinst,UserId,data,PlayerDataStore)
 	else
 		
 		local retrieved_datatable = Get_Data(plrinst,UserId,PlayerDataStore)
-		
+
 		local metaData = Create_Folders_In_Player(plrinst)
-		
+
 		local teamValue = metaData:FindFirstChild("teamValue")
 		local raceValue = metaData:FindFirstChild("raceValue")
 		local genderValue = metaData:FindFirstChild("genderValue")
 		local displayNameValue = metaData:FindFirstChild("displayNameValue")
-		
+
 		local Retrived_teamValue = retrieved_datatable["teamValue"]
 		local Retrived_raceValue = retrieved_datatable["raceValue"]
 		local Retrived_genderValue = retrieved_datatable["genderValue"]
 		local Retrived_displayNameValue = retrieved_datatable["displayNameValue"]
-		
-		
+
+
 		teamValue.Value = Retrived_teamValue
 		raceValue.Value = Retrived_raceValue
 		genderValue.Value = Retrived_genderValue
