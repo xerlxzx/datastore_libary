@@ -106,7 +106,7 @@ game.Players.PlayerAdded:Connect(function(plrinst)
 	local UserId = plrinst.UserId
 	local creation_frame = plrinst.PlayerGui.creationGui.Frame
 	
-	if Has_player_joined(plrinst,UserId,PlayerDataStore) then
+	if not Has_player_joined(plrinst,UserId,PlayerDataStore) then
 		
 		local metaData = Create_Folders_In_Player(plrinst)
 
